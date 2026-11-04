@@ -1,0 +1,28 @@
+# Ported from the Linux alacritty.toml (dotfiles-example)
+
+font-family = 0xProto Nerd Font Mono
+font-size = 14
+
+# Rosé Pine: soft and dark, same theme as tmux
+theme = Rose Pine
+
+# Block cursor, no blinking (no-cursor stops shell integration turning it into a bar)
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+
+mouse-hide-while-typing = true
+window-padding-x = 4
+window-padding-y = 4
+maximize = true
+
+# Left Option acts as Alt for the tmux M-* bindings; right Option still types @ # [ ] ...
+macos-option-as-alt = left
+
+# Every window lands in tmux (login shell so Homebrew is on PATH)
+command = /bin/zsh -l -c "tmux attach || tmux"
+
+keybind = shift+enter=text:\x1b\r
+
+# No title bar: AeroSpace tiles the windows
+macos-titlebar-style = hidden

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Always visible in the notch row (windows can't use it anyway); Opt+- toggles it (AeroSpace).
+export PATH=/opt/homebrew/bin:$PATH
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Rosé Pine, same as Ghostty and tmux
+source "$CONFIG_DIR/colors.sh"
+
+sketchybar --bar position=top height=32 color=$BASE topmost=off hidden=off \
+                 margin=0 y_offset=0 corner_radius=0 padding_left=8 padding_right=8
+
+sketchybar --default icon.font="0xProto Nerd Font Mono:Bold:13.0" \
+                     label.font="0xProto Nerd Font Mono:Regular:13.0" \
+                     icon.color=$SUBTLE label.color=$SUBTLE \
+                     padding_left=2 padding_right=2 \
+                     label.padding_left=6 label.padding_right=6
+
+# Workspaces (AeroSpace triggers aerospace_workspace_change)
+sketchybar --add event aerospace_workspace_change
+for sid in $(aerospace list-workspaces --all); do
+  sketchybar --add item space.$sid left \
+             --subscribe space.$sid aerospace_workspace_change \
+             --set space.$sid label="$sid" \
+                   background.color=$HIGHLIGHT background.corner_radius=2 \
+                   background.height=20 background.drawing=off \
+                   click_script="aerospace workspace $sid" \
+                   script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
+sketchybar --add item front_app left \
+           --set front_app label.color=$MUTED script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+sketchybar --add item clock right \
+           --set clock update_freq=30 script="$PLUGIN_DIR/clock.sh" \
+           --add item battery right \
+           --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change
+
+sketchybar --update

@@ -1,0 +1,11 @@
+\.git
+\.gitignore
+\.gitmodules
+\.DS_Store
+^/README.*
+^/KEYMAP\.md
+^/Brewfile.*
+^/setup
+^/\.stow-local-ignore
+^/wallpapers
+^/AGENTS\.md

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# JankyBorders: rounded outline on the focused window, drawn above it so it shows with
+# no gaps. Rosé Pine gold, like the warm light in the toro wallpaper.
+options=(
+  style=round
+  width=4.0
+  hidpi=on
+  order=above
+  active_color=0xfff6c177
+  inactive_color=0x00000000
+)
+borders "${options[@]}"

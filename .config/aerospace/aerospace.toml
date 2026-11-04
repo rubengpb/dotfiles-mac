@@ -1,0 +1,113 @@
+# AeroSpace: i3-like tiling. Keymap: KEYMAP.md
+# Option owns the window manager; Cmd stays with the apps.
+# AeroSpace takes Option+key from both Option keys, so keys whose Option character matters on
+# Spanish ISO are left alone: ñ (~), e (€), 1/2/3 (| @ #).
+# Key names are US-QWERTY physical positions: on Spanish ISO `slash` is the - key.
+
+config-version = 2
+
+start-at-login = true
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+automatically-unhide-macos-hidden-apps = true
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+persistent-workspaces = ['1', '2', '3', '4', '5']
+
+# Keep the SketchyBar workspace indicator in sync
+exec-on-workspace-change = ['/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE']
+
+[exec]
+inherit-env-vars = true
+[exec.env-vars]
+PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
+[key-mapping]
+preset = 'qwerty'
+
+[gaps]
+# No gaps. The top row is SketchyBar's: on the built-in screen macOS already keeps the
+# notch row out of the windows' area; elsewhere leave room for the 32px bar.
+inner.horizontal = 0
+inner.vertical = 0
+outer.left = 0
+outer.right = 0
+outer.top = [{ monitor.built-in = 0 }, 32]
+outer.bottom = 0
+
+[mode.main.binding]
+# Focus / move, vim style
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Workspaces 1-5 on y/u/i/o/p (+Shift: send the window there)
+alt-y = 'workspace 1'
+alt-u = 'workspace 2'
+alt-i = 'workspace 3'
+alt-o = 'workspace 4'
+alt-p = 'workspace 5'
+alt-shift-y = 'move-node-to-workspace 1'
+alt-shift-u = 'move-node-to-workspace 2'
+alt-shift-i = 'move-node-to-workspace 3'
+alt-shift-o = 'move-node-to-workspace 4'
+alt-shift-p = 'move-node-to-workspace 5'
+alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Windows
+alt-x = 'close'
+alt-r = 'fullscreen'
+alt-t = 'layout floating tiling'
+alt-v = 'layout tiles horizontal vertical'
+alt-w = 'layout accordion horizontal vertical'
+alt-s = 'mode resize'
+alt-m = 'mode service'
+
+# Apps, same keys as GNOME (every Ghostty window attaches to the same tmux, so focusing it is enough)
+alt-a = 'exec-and-forget open -a Ghostty'
+alt-shift-t = 'exec-and-forget open -a Terminal ~'
+alt-f = 'exec-and-forget open -a Firefox'
+alt-d = 'exec-and-forget open -a "Brave Browser"'
+alt-z = 'exec-and-forget open -a Zen'
+alt-g = 'exec-and-forget open ~'
+alt-shift-s = 'exec-and-forget open -a "System Settings"'
+ctrl-shift-esc = 'exec-and-forget open -a "Activity Monitor"'
+
+# System
+alt-slash = 'exec-and-forget sketchybar --bar hidden=toggle'
+alt-c = 'exec-and-forget screencapture -i -c'
+alt-shift-c = 'exec-and-forget open -a Screenshot'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+equal = 'balance-sizes'
+esc = 'mode main'
+enter = 'mode main'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'

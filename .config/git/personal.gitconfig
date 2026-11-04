@@ -1,0 +1,4 @@
+# Personal identity, only for this repo (included from ~/.gitconfig)
+[user]
+	email = rubengarciapatosbenito@gmail.com
+	name = Rubén García-Patos Benito

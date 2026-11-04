@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# One tmux session per project: switch to it, creating it on first use.
+#   tmux-sessionizer           pick a project with fzf
+#   tmux-sessionizer <name>    jump straight to a project (aura, personal, tfg, normal, dotfiles)
+# A project can define its layout in an executable .tmux-sessionizer at its root;
+# it runs inside the new session's first window.
+# (macOS ships bash 3.2: no associative arrays, hence the case.)
+
+order=(aura personal tfg normal dotfiles)
+
+project_dir() {
+  case $1 in
+    aura) echo "$HOME/AURA" ;;
+    personal) echo "$HOME/personal" ;;
+    tfg) echo "$HOME/university/tfg-mates/memoria" ;;
+    normal) echo "$HOME" ;;
+    dotfiles) echo "$HOME/dotfiles" ;;
+  esac
+}
+
+name=$1
+if [[ -z $name ]]; then
+  name=$(printf '%s\n' "${order[@]}" | fzf --prompt='project> ') || exit 0
+  [[ -z $name ]] && exit 0
+fi
+
+dir=$(project_dir "$name")
+if [[ -z $dir ]]; then
+  echo "tmux-sessionizer: unknown project '$name'" >&2
+  exit 1
+fi
+mkdir -p "$dir"
+
+if ! tmux has-session -t="$name" 2>/dev/null; then
+  tmux new-session -ds "$name" -c "$dir"
+  if [[ -x $dir/.tmux-sessionizer ]]; then
+    tmux send-keys -t "$name" "$dir/.tmux-sessionizer" Enter
+  fi
+fi
+
+if [[ -z $TMUX ]]; then
+  tmux attach -t "$name"
+else
+  tmux switch-client -t "$name"
+fi
