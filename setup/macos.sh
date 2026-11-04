@@ -32,6 +32,11 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 \
   '{enabled = 0; value = {parameters = (32, 49, 1048576); type = standard;};}'
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
+# Never sleep or turn the screen off on its own (battery and charger); only
+# Apple menu > Sleep or closing the lid. No screen saver either.
+sudo pmset -a sleep 0 displaysleep 0 disksleep 0
+defaults -currentHost write com.apple.screensaver idleTime -int 0
+
 # Ghostty opens shell scripts and .command files
 duti -s com.mitchellh.ghostty public.unix-executable all
 duti -s com.mitchellh.ghostty com.apple.terminal.shell-script all

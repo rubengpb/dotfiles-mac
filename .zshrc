@@ -96,5 +96,13 @@ export EDITOR=nvim
 # Avoid warning message
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
+# >>> AURA dev toolchain (macOS only) >>>
+if [[ "$OSTYPE" == darwin* ]]; then
+  export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"
+fi
+# <<< AURA dev toolchain <<<
+
 # zoxide must be initialized last (its doctor warns otherwise)
 eval "$(zoxide init --cmd cd zsh)"
