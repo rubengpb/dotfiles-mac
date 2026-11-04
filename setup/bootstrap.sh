@@ -5,9 +5,10 @@ cd "$(dirname "$0")/.."
 
 brew bundle --file=Brewfile
 
-# Real dirs first, so stow links our subfolders instead of the whole ~/.config or ~/.local
-mkdir -p ~/.config ~/.local/bin
+# Real dirs first, so stow links our subfolders instead of the whole ~/.config, ~/.local or ~/.claude
+mkdir -p ~/.config ~/.local/bin ~/.claude
 stow .
+./setup/claude-tui.sh
 
 ./setup/macos.sh
 ./setup/wallpaper.sh
