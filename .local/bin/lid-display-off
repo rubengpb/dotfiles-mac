@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Turn the built-in screen off when the lid closes. With `pmset disablesleep 1`
+# the Mac keeps running with the lid shut but leaves the screen lit.
+# Skipped when an external display is connected (clamshell mode).
+# Runs from ~/Library/LaunchAgents/es.rubengpb.lid-display-off.plist.
+
+lid_closed() {
+  /usr/sbin/ioreg -r -k AppleClamshellState -d 1 | grep -q '"AppleClamshellState" = Yes'
+}
+
+external_display() {
+  /usr/sbin/system_profiler SPDisplaysDataType | grep 'Connection Type:' | grep -vq Internal
+}
+
+was_closed=false
+while true; do
+  if lid_closed; then
+    if ! $was_closed && ! external_display; then
+      /usr/bin/pmset displaysleepnow
+    fi
+    was_closed=true
+  else
+    was_closed=false
+  fi
+  sleep 2
+done

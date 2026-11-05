@@ -32,9 +32,11 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 \
   '{enabled = 0; value = {parameters = (32, 49, 1048576); type = standard;};}'
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-# Never sleep or turn the screen off on its own (battery and charger); only
-# Apple menu > Sleep or closing the lid. No screen saver either.
-sudo pmset -a sleep 0 displaysleep 0 disksleep 0
+# Never sleep or turn the screen off on its own (battery and charger), not
+# even with the lid closed: the lid only turns the screen off. disablesleep
+# also blocks Apple menu > Sleep; `sudo pmset -a disablesleep 0` undoes it.
+# No screen saver either.
+sudo pmset -a sleep 0 displaysleep 0 disksleep 0 disablesleep 1
 defaults -currentHost write com.apple.screensaver idleTime -int 0
 
 # Ghostty opens shell scripts and .command files
@@ -43,6 +45,10 @@ duti -s com.mitchellh.ghostty com.apple.terminal.shell-script all
 
 brew services start sketchybar
 brew services start borders
+
+# Screen off on lid close (disablesleep leaves it on); the agent is stowed
+launchctl bootout "gui/$(id -u)/es.rubengpb.lid-display-off" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/es.rubengpb.lid-display-off.plist
 
 killall Dock SystemUIServer 2>/dev/null || true
 echo "Done. Log out and back in for the Spaces/menu bar changes."
