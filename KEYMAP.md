@@ -52,6 +52,15 @@ or `1/2/3` (`| @ #`). Check this before adding a binding.
 | `Cmd+Space` | Raycast |
 | `Opt+-` | show / hide SketchyBar |
 | `Opt+c` `Opt+Shift+c` | screenshot of a region to clipboard / Screenshot app |
+| `Opt+Shift+'` | lock the screen |
+
+## Session
+| Keys | Action |
+|---|---|
+| `Opt+q` `Opt+Shift+w` | shut down / restart |
+| `Ctrl+Opt+⌫` | log out |
+
+The dialogs cancel with `Esc` and confirm themselves after 60 s.
 
 ## tmux
 | Keys | Action |

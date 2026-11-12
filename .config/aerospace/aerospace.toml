@@ -89,6 +89,14 @@ alt-slash = 'exec-and-forget sketchybar --bar hidden=toggle'
 alt-c = 'exec-and-forget screencapture -i -c'
 alt-shift-c = 'exec-and-forget open -a Screenshot'
 
+# Session, GNOME's keys (restart is Opt+Shift+w: Opt+w is the accordion). Shut down,
+# restart and log out open macOS's own dialog (Esc cancels, it confirms itself after 60 s).
+# `minus` is the ' key on Spanish ISO.
+alt-q = "exec-and-forget osascript -e 'tell app \"loginwindow\" to «event aevtrsdn»'"
+alt-shift-w = "exec-and-forget osascript -e 'tell app \"loginwindow\" to «event aevtrrst»'"
+ctrl-alt-backspace = "exec-and-forget osascript -e 'tell app \"loginwindow\" to «event aevtlogo»'"
+alt-shift-minus = "exec-and-forget osascript -e 'tell app \"System Events\" to keystroke \"q\" using {command down, control down}'"
+
 [mode.resize.binding]
 h = 'resize width -50'
 j = 'resize height +50'
