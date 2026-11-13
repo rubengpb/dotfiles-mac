@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Code status line: model · effort │ session name │ dir (branch) │ context usage
+# Claude Code status line: model · effort │ session name │ branch │ context usage
 # Port of dotfiles-example/.claude/statusline.sh. Must run on macOS's /bin/bash 3.2 and BSD tools.
 input=$(cat)
 [ -n "$CLAUDE_STATUSLINE_DUMP" ] && printf "%s" "$input" > "$CLAUDE_STATUSLINE_DUMP"
@@ -30,7 +30,6 @@ if [ -z "$sname" ] && [ -f "$tpath" ]; then
 fi
 
 [ -n "$dir" ] && branch=$(git -C "$dir" branch --show-current 2>/dev/null)
-short_dir=${dir/#$HOME/\~}
 
 if [ -z "$pct" ] && [ -n "$size" ] && [ "$size" -gt 0 ] 2>/dev/null; then
   pct=$(( used * 100 / size ))
@@ -51,8 +50,7 @@ dim=$'\e[2m'; rst=$'\e[0m'; cyan=$'\e[36m'; mag=$'\e[35m'; blue=$'\e[34m'; yello
 out="${cyan}${model}${rst}"
 [ -n "$effort" ] && out+=" ${dim}·${rst} ${mag}${effort}${rst}"
 [ -n "$sname" ] && out+=" ${dim}│${rst} ${yellow}${sname}${rst}"
-out+=" ${dim}│${rst} ${blue}${short_dir}${rst}"
-[ -n "$branch" ] && out+=" ${dim}(${branch})${rst}"
+[ -n "$branch" ] && out+=" ${dim}│${rst} ${blue}${branch}${rst}"
 if [ -n "$pct" ]; then
   p=${pct%.*}
   if [ "$p" -lt 50 ]; then c=$'\e[32m'; elif [ "$p" -lt 80 ]; then c=$'\e[33m'; else c=$'\e[31m'; fi
