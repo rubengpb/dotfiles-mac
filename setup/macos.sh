@@ -43,6 +43,11 @@ defaults -currentHost write com.apple.screensaver idleTime -int 0
 duti -s com.mitchellh.ghostty public.unix-executable all
 duti -s com.mitchellh.ghostty com.apple.terminal.shell-script all
 
+# Tailscale starts at login, connected
+defaults write io.tailscale.ipn.macsys TailscaleStartOnLogin -bool true
+osascript -e 'tell application "System Events" to if not (exists login item "Tailscale") then make login item at end with properties {path:"/Applications/Tailscale.app", hidden:true}' >/dev/null
+open -a Tailscale
+
 brew services start sketchybar
 brew services start borders
 

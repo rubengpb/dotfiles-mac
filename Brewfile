@@ -27,6 +27,7 @@ cask "raycast"
 cask "firefox"
 cask "brave-browser"
 cask "zen"
+cask "tailscale-app"
 
 # Fonts
 cask "font-0xproto-nerd-font"
